@@ -17,15 +17,17 @@ fn main() {
 
     // Add a path to be watched. All files and directories at that path and
     // below will be monitored for changes.
+    #[cfg(target_os = "windows")]
     watcher.watch("d:/pdf", RecursiveMode::Recursive).unwrap();
+    #[cfg(target_os = "linux")]
+    watcher.watch("/tmp/pdf", RecursiveMode::Recursive).unwrap();
 
     let mut child_id: u32 = 0;
 
-    let _app = if cfg!(windows) {
-        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-    } else {
-        "chrome"
-    };
+    #[cfg(target_os = "windows")]
+    let _app = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+    #[cfg(target_os = "linux")]
+    let _app = "google-chrome-stable";
 
     let par = "--kiosk";
 
@@ -42,7 +44,11 @@ fn main() {
                     if path.to_string_lossy().ends_with(".pdf") {
                         if child_id > 0 {
                             println!("Child's ID is {}", child_id);
+
+                            #[cfg(target_os = "windows")]
                             let c: usize = child_id as usize;
+                            #[cfg(target_os = "linux")]
+                            let c: i32 = child_id as i32;
 
                             let s = System::new_all();
                             /*for process in s.process_by_name("chrome") {
