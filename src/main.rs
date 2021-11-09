@@ -17,17 +17,25 @@ fn main() {
 
     // Add a path to be watched. All files and directories at that path and
     // below will be monitored for changes.
-    #[cfg(target_os = "windows")]
-    watcher.watch("d:/pdf", RecursiveMode::Recursive).unwrap();
-    #[cfg(target_os = "linux")]
-    watcher.watch("/tmp/pdf", RecursiveMode::Recursive).unwrap();
 
     let mut child_id: u32 = 0;
 
+    let mut _app: &str = "";
+    let _watch_path: &str = "";
+
     #[cfg(target_os = "windows")]
-    let _app = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+        let _watch_path = "d:/pdf";
+    #[cfg(target_os = "windows")]
+        let _app = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+
     #[cfg(target_os = "linux")]
-    let _app = "google-chrome-stable";
+        let _watch_path = "/tmp/pdf";
+    #[cfg(target_os = "linux")]
+        let _app = "google-chrome-stable";
+
+    println!("_watch_path {}", _watch_path);
+    println!("_app (file viewer) {}", _app);
+    watcher.watch(_watch_path, RecursiveMode::Recursive).unwrap();
 
     let par = "--kiosk";
 
