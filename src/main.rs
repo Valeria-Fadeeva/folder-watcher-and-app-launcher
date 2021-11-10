@@ -21,7 +21,7 @@ fn main() {
     let mut child_id: u32 = 0;
 
     let mut _app: &str = "";
-    let _watch_path: &str = "";
+    let mut _watch_path: &str = "";
 
     #[cfg(target_os = "windows")]
         let _watch_path = "d:/pdf";
