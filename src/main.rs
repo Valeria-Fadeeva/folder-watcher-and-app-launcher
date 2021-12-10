@@ -24,18 +24,20 @@ fn main() {
     let mut _watch_path: &str = "";
 
     #[cfg(target_os = "windows")]
-        let _watch_path = "d:/pdf";
+    let _watch_path = "d:/pdf";
     #[cfg(target_os = "windows")]
-        let _app = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+    let _app = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
 
     #[cfg(target_os = "linux")]
-        let _watch_path = "/tmp/pdf";
+    let _watch_path = "/tmp/pdf";
     #[cfg(target_os = "linux")]
-        let _app = "google-chrome-stable";
+    let _app = "google-chrome-stable";
 
     println!("_watch_path {}", _watch_path);
     println!("_app (file viewer) {}", _app);
-    watcher.watch(_watch_path, RecursiveMode::Recursive).unwrap();
+    watcher
+        .watch(_watch_path, RecursiveMode::Recursive)
+        .unwrap();
 
     let par = "--kiosk";
 
