@@ -23,15 +23,21 @@ fn main() {
     let mut _app: &str = "";
     let mut _watch_path: &str = "";
 
-    #[cfg(target_os = "windows")]
-    let _watch_path = "d:/pdf";
-    #[cfg(target_os = "windows")]
-    let _app = "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe";
+    let _watch_path: &str = if cfg!(target_os = "windows") {
+        "d:/pdf"
+    } else if cfg!(target_os = "linux") {
+        "/tmp/pdf"
+    } else {
+        "/tmp/pdf"
+    };
 
-    #[cfg(target_os = "linux")]
-    let _watch_path = "/tmp/pdf";
-    #[cfg(target_os = "linux")]
-    let _app = "google-chrome-stable";
+    let _app: &str = if cfg!(target_os = "windows") {
+        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
+    } else if cfg!(target_os = "linux") {
+        "google-chrome-stable"
+    } else {
+        "google-chrome-stable"
+    };
 
     println!("_watch_path {}", _watch_path);
     println!("_app (file viewer) {}", _app);
