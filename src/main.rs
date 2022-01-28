@@ -1,13 +1,32 @@
+extern crate dotenv;
 extern crate notify;
 
+use dotenv::dotenv;
 use notify::{raw_watcher, RawEvent, RecursiveMode, Watcher};
 use std::sync::mpsc::channel;
-
-use std::{process, thread, time};
+use std::{env, process, thread, time};
 
 use sysinfo::{ProcessExt, Signal, System, SystemExt};
 
 fn main() {
+    dotenv().ok();
+    let watcher_execute = env::var("WATCHER_EXECUTE").unwrap();
+    let _app: &str = watcher_execute.as_str();
+
+    let par: &str = "-s";
+
+    let mut child_id: u32 = 0;
+
+    let _watch_path: &str = "";
+
+    let _watch_path: &str = if cfg!(target_os = "windows") {
+        "d:/pdf"
+    } else if cfg!(target_os = "linux") {
+        "/tmp/pdf"
+    } else {
+        "/tmp/pdf"
+    };
+
     // Create a channel to receive the events.
     let (tx, rx) = channel();
 
@@ -18,34 +37,12 @@ fn main() {
     // Add a path to be watched. All files and directories at that path and
     // below will be monitored for changes.
 
-    let mut child_id: u32 = 0;
-
-    let mut _app: &str = "";
-    let mut _watch_path: &str = "";
-
-    let _watch_path: &str = if cfg!(target_os = "windows") {
-        "d:/pdf"
-    } else if cfg!(target_os = "linux") {
-        "/tmp/pdf"
-    } else {
-        "/tmp/pdf"
-    };
-
-    let _app: &str = if cfg!(target_os = "windows") {
-        "C:/Program Files (x86)/Google/Chrome/Application/chrome.exe"
-    } else if cfg!(target_os = "linux") {
-        "google-chrome-stable"
-    } else {
-        "google-chrome-stable"
-    };
-
-    println!("_watch_path {}", _watch_path);
-    println!("_app (file viewer) {}", _app);
     watcher
         .watch(_watch_path, RecursiveMode::Recursive)
         .unwrap();
 
-    let par = "--kiosk";
+    println!("_watch_path {}", _watch_path);
+    println!("_app (file viewer) {}", _app);
 
     loop {
         match rx.recv() {
@@ -92,6 +89,9 @@ fn main() {
                                     .to_string()
                                     .as_str(),
                             ])
+                            .stderr(process::Stdio::null()) // don't care about stderr
+                            .stdout(process::Stdio::inherit()) // set up stdout so we can read it
+                            .stdin(process::Stdio::inherit()) // set up stdin so we can write on it
                             .spawn()
                             .expect("failed to execute child");
 

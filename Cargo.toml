@@ -7,5 +7,6 @@ authors = ["Valeria Fadeeva <valeria@fadeeva.me>"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-sysinfo = "^0.*"
-notify = "^4.*"
+sysinfo = "*"
+notify = "*"
+dotenv = "*"
