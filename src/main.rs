@@ -14,7 +14,7 @@ fn main() {
     let _app: &str = watcher_execute.as_str();
 
     let _watch_path = env::var("WATCH_PATH").unwrap();
-    let _watch_path: &str = watcher_execute.as_str();
+    let _watch_path: &str = _watch_path.as_str();
 
     let mut child_id: u32 = 0;
 
@@ -72,13 +72,12 @@ fn main() {
                         thread::sleep(time::Duration::from_millis(500));
 
                         let child = process::Command::new(_app)
-                            .args([
-                                path.into_os_string()
-                                    .into_string()
-                                    .unwrap()
-                                    .to_string()
-                                    .as_str(),
-                            ])
+                            .args([path
+                                .into_os_string()
+                                .into_string()
+                                .unwrap()
+                                .to_string()
+                                .as_str()])
                             .stderr(process::Stdio::null()) // don't care about stderr
                             .stdout(process::Stdio::inherit()) // set up stdout so we can read it
                             .stdin(process::Stdio::inherit()) // set up stdin so we can write on it
