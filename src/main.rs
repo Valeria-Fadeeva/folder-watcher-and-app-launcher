@@ -13,19 +13,10 @@ fn main() {
     let watcher_execute = env::var("WATCHER_EXECUTE").unwrap();
     let _app: &str = watcher_execute.as_str();
 
-    let par: &str = "-s";
+    let _watch_path = env::var("WATCH_PATH").unwrap();
+    let _watch_path: &str = watcher_execute.as_str();
 
     let mut child_id: u32 = 0;
-
-    let _watch_path: &str = "";
-
-    let _watch_path: &str = if cfg!(target_os = "windows") {
-        "d:/pdf"
-    } else if cfg!(target_os = "linux") {
-        "/tmp/pdf"
-    } else {
-        "/tmp/pdf"
-    };
 
     // Create a channel to receive the events.
     let (tx, rx) = channel();
@@ -82,7 +73,6 @@ fn main() {
 
                         let child = process::Command::new(_app)
                             .args([
-                                par,
                                 path.into_os_string()
                                     .into_string()
                                     .unwrap()
